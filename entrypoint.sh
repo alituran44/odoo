@@ -26,10 +26,10 @@ check_config "db_password" "$PASSWORD"
 case "$1" in
     -- | odoo)
         shift
-        exec odoo "$@" "${DB_ARGS[@]}"
+        exec odoo "$@" "${DB_ARGS[@]}" "-d" "odoo_db" "-i" "base,social_media_community,marketing_ads_dashboard"
         ;;
     -*)
-        exec odoo "$@" "${DB_ARGS[@]}"
+        exec odoo "$@" "${DB_ARGS[@]}" "-d" "odoo_db" "-i" "base,social_media_community,marketing_ads_dashboard"
         ;;
     *)
         exec "$@"
