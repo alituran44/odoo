@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: odoo-agency-app
+    env: docker
+    plan: free
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: PORT
+        value: 8069
+      - key: HOST
+        fromDatabase:
+          name: odoo-postgres
+          property: host
+      - key: USER
+        fromDatabase:
+          name: odoo-postgres
+          property: user
+      - key: PASSWORD
+        fromDatabase:
+          name: odoo-postgres
+          property: password
+      - key: DATABASE
+        fromDatabase:
+          name: odoo-postgres
+          property: database
+
+databases:
+  - name: odoo-postgres
+    databaseName: odoo_db
+    user: odoo
+    plan: free

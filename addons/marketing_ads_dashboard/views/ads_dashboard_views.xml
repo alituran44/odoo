@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Navigation Menu -->
+    <menuitem id="menu_ads_dashboard_root" name="Reklam Paneli (Ads)" sequence="16" web_icon="marketing_ads_dashboard,static/description/icon.png"/>
+
+    <!-- Ads Account Views -->
+    <record id="view_ads_account_tree" model="ir.ui.view">
+        <field name="name">ads.account.tree</field>
+        <field name="model">ads.account</field>
+        <field name="arch" type="xml">
+            <tree string="Müşteri Reklam Hesapları">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="provider"/>
+                <field name="account_id"/>
+                <field name="daily_budget"/>
+                <field name="total_spend" widget="monetary"/>
+                <field name="total_clicks"/>
+                <field name="conversions"/>
+                <field name="cpc"/>
+                <field name="cpa"/>
+                <field name="roas"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_ads_account_form" model="ir.ui.view">
+        <field name="name">ads.account.form</field>
+        <field name="model">ads.account</field>
+        <field name="arch" type="xml">
+            <form string="Reklam Hesabı">
+                <sheet>
+                    <group>
+                        <group string="Hesap Detayları">
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="provider"/>
+                            <field name="account_id"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                        <group string="Özet Performans Göstergeleri">
+                            <field name="daily_budget" widget="monetary"/>
+                            <field name="total_spend" widget="monetary"/>
+                            <field name="total_clicks"/>
+                            <field name="total_impressions"/>
+                            <field name="conversions"/>
+                            <field name="cpc"/>
+                            <field name="cpa"/>
+                            <field name="roas"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="📊 Aktif Kampanyalar">
+                            <field name="campaign_ids">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="status"/>
+                                    <field name="budget" widget="monetary"/>
+                                    <field name="spend" widget="monetary"/>
+                                    <field name="impressions"/>
+                                    <field name="clicks"/>
+                                    <field name="ctr"/>
+                                    <field name="cpc"/>
+                                    <field name="conversions"/>
+                                    <field name="cpa"/>
+                                    <field name="roas"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ads_account" model="ir.actions.act_window">
+        <field name="name">Müşteri Reklam Hesapları</field>
+        <field name="res_model">ads.account</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Ads Campaign Views -->
+    <record id="view_ads_campaign_kanban" model="ir.ui.view">
+        <field name="name">ads.campaign.kanban</field>
+        <field name="model">ads.campaign</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="ads_account_id"/>
+                <field name="partner_id"/>
+                <field name="provider"/>
+                <field name="spend"/>
+                <field name="clicks"/>
+                <field name="conversions"/>
+                <field name="roas"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record">
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title"><field name="name"/></strong>
+                                <div><span class="badge text-bg-primary"><field name="provider"/></span> - <small><field name="partner_id"/></small></div>
+                                <div class="mt-2"><strong>Harcama:</strong> <field name="spend"/> ₺</div>
+                                <div><small><strong>Tıklama:</strong> <field name="clicks"/> | <strong>Dönüşüm:</strong> <field name="conversions"/></small></div>
+                                <div><small><strong>ROAS:</strong> <span class="badge text-bg-success"><field name="roas"/>x</span></small></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_ads_campaign_tree" model="ir.ui.view">
+        <field name="name">ads.campaign.tree</field>
+        <field name="model">ads.campaign</field>
+        <field name="arch" type="xml">
+            <tree string="Reklam Kampanyaları">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="provider"/>
+                <field name="ads_account_id"/>
+                <field name="status"/>
+                <field name="budget" widget="monetary"/>
+                <field name="spend" widget="monetary"/>
+                <field name="impressions"/>
+                <field name="clicks"/>
+                <field name="ctr"/>
+                <field name="cpc"/>
+                <field name="conversions"/>
+                <field name="cpa"/>
+                <field name="roas"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_ads_campaign_graph" model="ir.ui.view">
+        <field name="name">ads.campaign.graph</field>
+        <field name="model">ads.campaign</field>
+        <field name="arch" type="xml">
+            <graph string="Reklam Harcamaları Analizi" type="bar">
+                <field name="partner_id" type="row"/>
+                <field name="provider" type="col"/>
+                <field name="spend" type="measure"/>
+                <field name="conversions" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_ads_campaign_pivot" model="ir.ui.view">
+        <field name="name">ads.campaign.pivot</field>
+        <field name="model">ads.campaign</field>
+        <field name="arch" type="xml">
+            <pivot string="Reklam Performans Özeti">
+                <field name="partner_id" type="row"/>
+                <field name="provider" type="col"/>
+                <field name="spend" type="measure"/>
+                <field name="clicks" type="measure"/>
+                <field name="conversions" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_ads_campaign_form" model="ir.ui.view">
+        <field name="name">ads.campaign.form</field>
+        <field name="model">ads.campaign</field>
+        <field name="arch" type="xml">
+            <form string="Reklam Kampanyası">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="active,paused,completed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Kampanya Bilgileri">
+                            <field name="name"/>
+                            <field name="ads_account_id"/>
+                            <field name="partner_id"/>
+                            <field name="provider"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <group string="Bütçe &amp; Performans Metrikleri">
+                            <field name="budget" widget="monetary"/>
+                            <field name="spend" widget="monetary"/>
+                            <field name="impressions"/>
+                            <field name="clicks"/>
+                            <field name="ctr"/>
+                            <field name="cpc"/>
+                            <field name="conversions"/>
+                            <field name="cpa"/>
+                            <field name="roas"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Hedefleme &amp; Notlar">
+                            <field name="notes" placeholder="Kampanya hedef kitle, anahtar kelimeler ve reklam metni notları..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ads_campaign" model="ir.actions.act_window">
+        <field name="name">Reklam Kampanyaları</field>
+        <field name="res_model">ads.campaign</field>
+        <field name="view_mode">kanban,tree,graph,pivot,form</field>
+    </record>
+
+    <!-- Sub-Menus -->
+    <menuitem id="menu_ads_campaign" name="Reklam Kampanyaları" parent="menu_ads_dashboard_root" action="action_ads_campaign" sequence="10"/>
+    <menuitem id="menu_ads_account" name="Müşteri Reklam Hesapları" parent="menu_ads_dashboard_root" action="action_ads_account" sequence="20"/>
+</odoo>

@@ -1,0 +1,17 @@
+# Python & Environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# PostgreSQL data & Local Files
+pgdata/
+.tempmediaStorage/
+*.log
+*.png
+*.tar.gz
+
+# IDEs
+.vscode/
+.idea/
