@@ -5,6 +5,8 @@ services:
     plan: free
     dockerfilePath: Dockerfile
     envVars:
+      - key: PORT
+        value: 8069
       - key: HOST
         fromDatabase:
           name: odoo-postgres
