@@ -13,6 +13,4 @@ RUN chown -R odoo:odoo /mnt/extra-addons /etc/odoo/odoo.conf
 
 USER odoo
 
-EXPOSE 8069 8072
-
-CMD ["odoo", "-c", "/etc/odoo/odoo.conf"]
+EXPOSE 8069

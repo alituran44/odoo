@@ -19,10 +19,6 @@ services:
         fromDatabase:
           name: odoo-postgres
           property: password
-      - key: DATABASE
-        fromDatabase:
-          name: odoo-postgres
-          property: database
 
 databases:
   - name: odoo-postgres
