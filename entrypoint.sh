@@ -23,14 +23,15 @@ check_config "db_user" "$USER"
 check_config "db_password" "$PASSWORD"
 check_config "http_port" "$HTTP_PORT"
 
-INIT_MODULES="base,crm,sale_management,account,website,website_sale,mass_mailing,project,hr,hr_expense,hr_recruitment,hr_holidays,im_livechat,survey,fleet,repair,pos_restaurant,point_of_sale,mrp,social_media_community,marketing_ads_dashboard"
+INIT_MODULES="base,crm,sale_management,account,website,website_sale,mass_mailing,project,hr,hr_expense,hr_recruitment,hr_holidays,im_livechat,survey,fleet,repair,pos_restaurant,point_of_sale,mrp,purchase,stock,calendar,contacts,board,note,social_media_community,marketing_ads_dashboard"
 
-# Batch initialize all 195 modules once into cloud database
-echo "Initialising all Odoo Community applications on cloud database..."
-odoo "${DB_ARGS[@]}" -d odoo_db -i "$INIT_MODULES" --without-demo=all --stop-after-init || true
+echo "1. Initialising all Odoo Community applications and Turkish language on Render..."
+odoo "${DB_ARGS[@]}" -d odoo_db -i "$INIT_MODULES" -l "tr_TR" --without-demo=all --stop-after-init || true
 
-# Start Odoo server cleanly
-echo "Starting production Odoo server..."
+echo "2. Running Render automated setup script for Turkish language and admin permissions..."
+python3 /etc/odoo/render_auto_setup.py || true
+
+echo "3. Starting production Odoo server..."
 case "$1" in
     -- | odoo)
         shift
