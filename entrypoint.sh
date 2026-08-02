@@ -23,16 +23,21 @@ check_config "db_user" "$USER"
 check_config "db_password" "$PASSWORD"
 check_config "http_port" "$HTTP_PORT"
 
-# Auto install all main apps and custom agency modules on Render cloud database
 INIT_MODULES="base,crm,sale_management,account,website,website_sale,mass_mailing,project,hr,hr_expense,hr_recruitment,hr_holidays,im_livechat,survey,fleet,repair,pos_restaurant,point_of_sale,mrp,social_media_community,marketing_ads_dashboard"
 
+# Batch initialize all 195 modules once into cloud database
+echo "Initialising all Odoo Community applications on cloud database..."
+odoo "${DB_ARGS[@]}" -d odoo_db -i "$INIT_MODULES" --without-demo=all --stop-after-init || true
+
+# Start Odoo server cleanly
+echo "Starting production Odoo server..."
 case "$1" in
     -- | odoo)
         shift
-        exec odoo "$@" "${DB_ARGS[@]}" "-d" "odoo_db" "-i" "$INIT_MODULES"
+        exec odoo "$@" "${DB_ARGS[@]}" -d odoo_db
         ;;
     -*)
-        exec odoo "$@" "${DB_ARGS[@]}" "-d" "odoo_db" "-i" "$INIT_MODULES"
+        exec odoo "$@" "${DB_ARGS[@]}" -d odoo_db
         ;;
     *)
         exec "$@"
